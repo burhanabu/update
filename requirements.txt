@@ -14,4 +14,3 @@ pypinyin
 cn2an
 jieba
 langid
-wavmark
