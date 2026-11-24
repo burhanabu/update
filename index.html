@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AccentLive Pro</title>
+<style>
+:root{color-scheme:dark;--bg:#0c1117;--bg2:#121a22;--panel:#17212b;--line:#27384a;--ink:#edf3f7;--mute:#8da3b3;--air:#ffb020;--ok:#3ddc97;--bad:#ff4d3d;--f:Bahnschrift,"Segoe UI",system-ui,sans-serif}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:radial-gradient(1200px 500px at 20% -10%,#17283a 0,var(--bg) 60%);color:var(--ink);font:15px/1.4 var(--f)}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer;border:0;border-radius:10px;padding:9px 14px;background:var(--line)}
+button:hover{filter:brightness(1.15)}
+:focus-visible{outline:2px solid var(--air);outline-offset:2px}
+input,select{width:100%;background:#0a0f14;border:1px solid var(--line);border-radius:10px;padding:9px 11px}
+header{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:18px;padding:12px 22px;background:rgba(12,17,23,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.brand{font-size:22px;font-weight:700;letter-spacing:.3px;white-space:nowrap}
+.brand i{font-style:normal;color:var(--air)}
+#st{flex:1;min-width:0;height:20px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;color:var(--mute);font-size:13px}
+#st.bad{color:var(--bad)}
+#air{padding:6px 14px;border-radius:8px;border:2px solid var(--line);color:var(--mute);font-weight:700;letter-spacing:1px;font-size:13px}
+#air.on{border-color:var(--bad);color:#fff;background:var(--bad);box-shadow:0 0 22px rgba(255,77,61,.55)}
+.go{background:var(--ok);color:#04261a;font-weight:700;padding:11px 22px}
+.go.end{background:#34475a;color:var(--ink)}
+.stop{background:#2a1512;color:#ff8a7c;border:1px solid #5a2a22;font-weight:700;padding:11px 18px}
+.wrap{display:grid;grid-template-columns:minmax(0,1fr) 350px;gap:24px;max-width:1240px;margin:0 auto;padding:20px 22px 48px}
+@media(max-width:920px){.wrap{grid-template-columns:1fr}}
+#tabs{display:flex;gap:8px;flex-wrap:wrap;min-height:42px;margin-bottom:14px}
+.tab{background:transparent;border:1px solid var(--line);color:var(--mute);border-radius:999px;padding:7px 16px}
+.tab.on{background:var(--ink);color:#0c1117;border-color:var(--ink);font-weight:700}
+.keys{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));grid-auto-rows:104px;gap:14px;min-height:326px;align-content:start}
+.key{--h:200;position:relative;overflow:hidden;text-align:left;color:#f3f8fb;border-radius:14px;padding:14px 14px 10px;display:flex;flex-direction:column;justify-content:space-between;
+ background:linear-gradient(180deg,hsl(var(--h) 42% 28%),hsl(var(--h) 44% 20%));border:1px solid hsl(var(--h) 40% 38%);border-bottom:6px solid hsl(var(--h) 60% 48%);transition:transform .04s}
+.key:active{transform:translateY(4px);border-bottom-width:2px}
+.key b{font-size:18px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-right:26px}
+.key small{color:hsl(var(--h) 30% 80%);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.key .n{position:absolute;right:11px;top:9px;font-size:13px;font-weight:700;color:hsl(var(--h) 40% 72%);opacity:.8}
+.key .prog{position:absolute;left:0;bottom:0;height:6px;width:0;background:#fff;opacity:.9}
+.key .eq{position:absolute;right:12px;bottom:12px;display:none;gap:3px;align-items:flex-end;height:22px}
+.key .eq span{width:4px;background:#3a2200;border-radius:2px;animation:eq .7s infinite ease-in-out}
+.key .eq span:nth-child(2){animation-delay:.15s}.key .eq span:nth-child(3){animation-delay:.3s}.key .eq span:nth-child(4){animation-delay:.45s}
+@keyframes eq{0%,100%{height:4px}50%{height:22px}}
+.key.prep{background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.07) 0 9px,transparent 9px 18px),linear-gradient(180deg,hsl(var(--h) 20% 24%),hsl(var(--h) 20% 18%));border-bottom-color:hsl(var(--h) 20% 36%)}
+.key.prep small::after{content:"  · getting ready";opacity:.8}
+.key.play{background:linear-gradient(180deg,#ffd37a,#ffb020);color:#2b1a00;border-color:#ffe2a6;border-bottom-color:#c27d00;box-shadow:0 0 0 3px rgba(255,176,32,.35),0 0 34px rgba(255,176,32,.6)}
+.key.play small,.key.play .n{color:#6a4300}
+.key.play .prog{background:#2b1a00}
+.key.play .eq{display:flex}
+.key.new{background:transparent;color:var(--mute);border:2px dashed var(--line);border-bottom-width:2px;align-items:center;justify-content:center;font-size:15px}
+@media(prefers-reduced-motion:reduce){.key .eq span{animation:none;height:12px}}
+.say{display:flex;gap:8px;margin-top:20px}
+.say input{flex:1;font-size:16px;padding:12px 14px}
+.say select{width:130px}
+#heard{height:22px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;margin-top:10px;color:var(--mute);font-size:13px}
+#inst{width:100%;margin-bottom:14px}
+aside{align-self:start;background:var(--panel);border-radius:16px;overflow:hidden;border:1px solid var(--line)}
+.stabs{display:grid;grid-template-columns:repeat(3,1fr);background:var(--bg2)}
+.stabs button{border-radius:0;background:transparent;color:var(--mute);padding:13px 4px;border-bottom:3px solid transparent}
+.stabs button.on{color:var(--ink);border-bottom-color:var(--air);font-weight:700}
+.pane{display:none;padding:16px;flex-direction:column;gap:12px}
+.pane.on{display:flex}
+label{display:flex;flex-direction:column;gap:5px;color:var(--mute);font-size:13px}
+.hint{margin:0;font-size:12.5px;color:var(--mute)}
+.vo{display:flex;align-items:center;gap:12px;background:var(--bg2);border:2px solid transparent;border-radius:12px;padding:10px 12px;cursor:pointer}
+.vo.on{border-color:var(--ok);background:#13261f}
+.av{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:16px;background:hsl(var(--h,200) 45% 32%);flex:none}
+.vo .nm{flex:1;min-width:0}
+.vo .nm b{display:block;font-weight:600}.vo .nm span{font-size:12px;color:var(--mute)}
+.vo button{padding:6px 11px}
+.vo .x{background:transparent;color:var(--mute)}
+.step{display:flex;gap:10px;align-items:flex-start}
+.step>i{flex:none;width:24px;height:24px;border-radius:50%;background:var(--air);color:#2b1a00;font-style:normal;font-weight:700;display:grid;place-items:center;font-size:13px;margin-top:2px}
+.step>div{flex:1;display:flex;flex-direction:column;gap:8px}
+.script{margin:0;font-size:13px;background:#0a0f14;border-radius:10px;padding:10px 12px;border-left:3px solid var(--air)}
+.row{display:flex;gap:8px}.row>*{flex:1}
+.rec{background:var(--bad);color:#fff;font-weight:700}
+#sample.ok{color:var(--ok)}
+dialog{background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:16px;padding:20px;width:min(780px,94vw)}
+dialog::backdrop{background:rgba(0,0,0,.65)}
+#rows{max-height:58vh;overflow:auto;display:flex;flex-direction:column;gap:8px;margin:14px 0}
+.er{display:grid;grid-template-columns:130px 1fr 110px auto;gap:6px;align-items:center}
+.er button{padding:6px 9px}
+@media(max-width:640px){.er{grid-template-columns:1fr 1fr}}
+</style></head>
+<body>
+<header>
+  <div class="brand">Accent<i>Live</i> Pro</div>
+  <div id="st">Starting…</div>
+  <span id="air">ON AIR</span>
+  <button id="stop" class="stop" title="Esc">■ Stop</button>
+  <button id="callbtn" class="go">Start call</button>
+</header>
+<div class="wrap">
+<section>
+  <button id="inst" class="go" hidden>Install virtual microphone (one click)</button>
+  <nav id="tabs"></nav>
+  <div id="keys" class="keys"></div>
+  <div class="say">
+    <input id="txt" placeholder="Type a line and press Enter to speak it" autocomplete="off">
+    <select id="grp" title="Group for the new button"></select>
+    <button id="addb" title="Save this line as a button">+ Button</button>
+  </div>
+  <div id="heard"></div>
+</section>
+<aside>
+  <div class="stabs"><button data-p="voice" class="on">Voice</button><button data-p="mine">My voice</button><button data-p="setup">Setup</button></div>
+  <div class="pane on" id="p-voice">
+    <div id="voices" style="display:flex;flex-direction:column;gap:8px"></div>
+    <label>Speed <span id="spv"></span><input type="range" id="speed" min="0.8" max="1.3" step="0.05"></label>
+    <p class="hint">Tap a voice to use it for every button. ▶ plays a short test on your speakers.</p>
+  </div>
+  <div class="pane" id="p-mine">
+    <div class="step"><i>1</i><div><b>Give me your voice</b>
+      <p class="hint">Quiet room, 20–30 seconds. Read this out loud, or upload a clean recording of you.</p>
+      <p class="script">The quick brown fox jumps over the lazy dog. I am recording my voice so I can use it in my calls. Today is a good day to start something new, and I will speak clearly and slowly.</p>
+      <div class="row"><button id="rec">● Record</button><button id="up">Upload file</button></div>
+      <input type="file" id="file" accept="audio/*" hidden>
+      <p class="hint" id="sample">No sample yet.</p></div></div>
+    <div class="step"><i>2</i><div><b>Name it</b>
+      <input id="cname" placeholder="Your name, e.g. Ali" maxlength="24">
+      <select id="cbase" title="Closest base voice"><option value="am_adam">Sounds like Adam (male)</option><option value="af_jessica">Sounds like Jessica (female)</option><option value="af_sarah">Sounds like Sarah (female)</option></select></div></div>
+    <div class="step"><i>3</i><div><b>Create</b>
+      <button id="mk" class="go">Create my voice</button>
+      <p class="hint" id="cmsg"></p></div></div>
+    <p class="hint">When it is ready it appears in the Voice tab under your name. Pick it and all buttons speak in your voice. Clone only your own voice; every call still opens with the AI-voice line.</p>
+  </div>
+  <div class="pane" id="p-setup">
+    <label>Your name<input id="name" autocomplete="off"></label>
+    <label>Company<input id="company" autocomplete="off"></label>
+    <p class="hint" id="disc"></p>
+    <label>Send voice to (virtual cable)<select id="cable"></select></label>
+    <label>Hear it myself on<select id="monitor"></select></label>
+    <button id="edit">Edit all buttons…</button>
+  </div>
+</aside>
+</div>
+<dialog id="dlg"><h2 style="margin:0">Edit buttons</h2>
+  <p class="hint">Reorder with ▲ ▼. Each group becomes a tab. New or changed lines are prepared right after you save.</p>
+  <div id="rows"></div>
+  <div class="row"><button id="radd">+ Add row</button><button id="rcancel">Cancel</button><button id="rsave" class="go">Save</button></div>
+</dialog>
+<script>
+const $=i=>document.getElementById(i);
+let S=null,tab="All",lp={id:null,t:0},formSig="",keySig="",els={},sample=null,rec=null,draft=[];
+const api=(u,b)=>fetch(u,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(b||{})}).then(r=>r.json()).catch(()=>({error:"Engine is not running"}));
+const save=p=>api("/api/config",p).then(poll);
+const HUES=[200,155,28,285,345,55,185,10];
+const groups=()=>[...new Set(S.cfg.buttons.map(b=>b.group))];
+const hue=g=>HUES[Math.max(0,groups().indexOf(g))%HUES.length];
+const visible=()=>S.cfg.buttons.filter(b=>tab==="All"||b.group===tab);
+function opt(el,items,sel,none){el.replaceChildren();if(none!==undefined){const o=document.createElement("option");o.value="";o.textContent=none;el.append(o)}
+ for(const t of items){const o=document.createElement("option");o.value=t;o.textContent=t;if(t===sel)o.selected=true;el.append(o)}}
+const el=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!==undefined)e.textContent=x;return e};
+
+function press(b){if(!S)return;lp={id:b.id,t:Date.now()};api("/api/press",{id:b.id});paint()}
+function buildKeys(){const k=$("keys");k.replaceChildren();els={};
+ visible().forEach((b,i)=>{const e=el("button","key");e.style.setProperty("--h",hue(b.group));
+  const eq=el("div","eq");for(let j=0;j<4;j++)eq.append(el("span"));
+  e.append(el("b","",b.label),el("small","",b.text),el("span","n",i<9?i+1:""),eq);const p=el("div","prog");e.append(p);
+  e.onclick=()=>press(b);k.append(e);els[b.id]={e,p}});
+ const a=el("button","key new","+ New button");a.onclick=()=>$("txt").focus();k.append(a)}
+function buildTabs(){const t=$("tabs");t.replaceChildren();
+ for(const g of ["All",...groups()]){const e=el("button","tab"+(g===tab?" on":""),g);e.onclick=()=>{tab=g;keySig="";render()};t.append(e)}}
+function paint(){const pl=S.playing,rd=new Set(S.ready),now=Date.now();
+ for(const id in els){const {e,p}=els[id];const on=(pl&&pl.id===id)||(lp.id===id&&now-lp.t<500&&!pl)||S.loading===id;
+  e.classList.toggle("play",!!on);e.classList.toggle("prep",!rd.has(id)&&!on);
+  p.style.width=(pl&&pl.id===id)?Math.round(pl.progress*100)+"%":"0"}}
+function buildForm(){const c=S.cfg;const v=$("voices");v.replaceChildren();
+ S.voices.forEach((x,i)=>{const r=el("div","vo"+(x.id===c.voice?" on":""));
+  const av=el("div","av",x.name[0].toUpperCase());av.style.setProperty("--h",x.clone?38:[210,330,160][i%3]);
+  const nm=el("div","nm");nm.append(el("b","",x.name),el("span","",x.clone?"My voice":"Built-in voice"));
+  const t=el("button","","▶");t.title="Hear this voice";t.onclick=ev=>{ev.stopPropagation();api("/api/preview",{voice:x.id})};
+  r.append(av,nm,t);
+  if(x.clone){const d=el("button","x","✕");d.title="Delete this voice";d.onclick=ev=>{ev.stopPropagation();if(confirm("Delete voice “"+x.name+"”?"))api("/api/clone_del",{name:x.name}).then(poll)};r.append(d)}
+  r.onclick=()=>save({voice:x.id});v.append(r)});
+ $("speed").value=c.speed;$("spv").textContent=c.speed+"x";
+ if(document.activeElement!==$("name"))$("name").value=c.name;if(document.activeElement!==$("company"))$("company").value=c.company;
+ opt($("cable"),S.outs,c.cable,"Choose…");opt($("monitor"),S.outs,c.monitor,"Off");
+ opt($("grp"),groups().concat(groups().includes("General")?[]:["General"]),tab==="All"?"General":tab)}
+function render(){if(!S||!S.cfg)return;
+ if(tab!=="All"&&!groups().includes(tab))tab="All";
+ const fs=JSON.stringify([S.cfg.voice,S.cfg.speed,S.cfg.cable,S.cfg.monitor,S.voices,S.outs,groups(),tab]);
+ if(fs!==formSig){formSig=fs;buildForm()}
+ const ks=JSON.stringify(S.cfg.buttons)+tab;if(ks!==keySig){keySig=ks;buildTabs();buildKeys()}
+ const n=S.cfg.buttons.length,r=S.ready.length;
+ const msg=S.err||(!S.cable_found?"Virtual microphone not installed. Click Install, allow the Windows prompt, then restart the PC.":
+  !S.engine_ready?(S.engine_status||"Loading voices… first start can take a few minutes"):r<n?"Getting buttons ready "+r+"/"+n+". You can already press any of them.":
+  S.call?"You are live. Buttons speak instantly.":"Ready. Every button is prepared.");
+ $("st").textContent=msg;$("st").className=S.err?"bad":"";
+ $("inst").hidden=S.cable_found;$("air").className=S.call?"on":"";
+ const cb=$("callbtn");cb.textContent=S.call?"End call":"Start call";cb.className="go"+(S.call?" end":"");
+ $("disc").textContent="Every call opens with: “"+S.intro+"”";
+ $("heard").textContent=S.heard.length?"Said: "+S.heard.join("  ·  "):"";
+ $("cmsg").textContent=S.clone.msg;$("mk").disabled=S.clone.busy;paint()}
+async function poll(){try{S=await (await fetch("/api/state")).json();render()}catch(e){$("st").textContent="Engine is not running. Start AccentLivePro again.";$("st").className="bad"}}
+
+document.querySelectorAll(".stabs button").forEach(b=>b.onclick=()=>{document.querySelectorAll(".stabs button").forEach(x=>x.classList.toggle("on",x===b));
+ document.querySelectorAll(".pane").forEach(p=>p.classList.toggle("on",p.id==="p-"+b.dataset.p))});
+$("callbtn").onclick=async()=>{await api("/api/call",{on:!S.call});poll()};
+$("stop").onclick=()=>{lp={id:null,t:0};api("/api/stop").then(poll)};
+$("inst").onclick=()=>{api("/api/install_cable");$("st").textContent="Installer is opening. Allow it, then restart the PC."};
+["name","company"].forEach(i=>$(i).onchange=()=>save({[i]:$(i).value}));
+$("speed").oninput=e=>$("spv").textContent=e.target.value+"x";
+$("speed").onchange=e=>save({speed:Number(e.target.value)});
+["cable","monitor"].forEach(i=>$(i).onchange=()=>save({[i]:$(i).value}));
+$("txt").onkeydown=e=>{if(e.key==="Enter"&&e.target.value.trim()){lp={id:"say",t:Date.now()};api("/api/say",{text:e.target.value});e.target.value=""}};
+let tm;$("txt").oninput=e=>{clearTimeout(tm);tm=setTimeout(()=>{const t=e.target.value.trim();if(t)api("/api/prepare",{text:t})},300)};
+$("addb").onclick=async()=>{const t=$("txt").value.trim();if(!t||!S)return;
+ const b={id:"n"+Date.now(),label:t.slice(0,18),text:t,group:$("grp").value||"General"};
+ $("txt").value="";await save({buttons:S.cfg.buttons.concat([b])})};
+document.onkeydown=e=>{if(/INPUT|TEXTAREA|SELECT/.test(e.target.tagName)||$("dlg").open)return;
+ if(e.key==="Escape")$("stop").click();else if(!e.repeat&&/^[1-9]$/.test(e.key)){const b=visible()[Number(e.key)-1];if(b)press(b)}};
+
+function rows(){const r=$("rows");r.replaceChildren();
+ draft.forEach((b,i)=>{const d=el("div","er");
+  const mk=(k,ph)=>{const x=el("input");x.value=b[k];x.placeholder=ph;x.oninput=()=>b[k]=x.value;if(k==="group")x.setAttribute("list","gl");return x};
+  const mv=(t,f)=>{const x=el("button","",t);x.onclick=f;return x};
+  const w=el("span");w.style.cssText="display:flex;gap:4px";
+  w.append(mv("▲",()=>{if(i){[draft[i-1],draft[i]]=[draft[i],draft[i-1]];rows()}}),mv("▼",()=>{if(i<draft.length-1){[draft[i+1],draft[i]]=[draft[i],draft[i+1]];rows()}}),mv("✕",()=>{draft.splice(i,1);rows()}));
+  d.append(mk("label","Name"),mk("text","What it says"),mk("group","Group"),w);r.append(d)});
+ let dl=$("gl");if(!dl){dl=el("datalist");dl.id="gl";document.body.append(dl)}
+ dl.replaceChildren();for(const g of new Set(draft.map(b=>b.group))){const o=el("option");o.value=g;dl.append(o)}}
+$("edit").onclick=()=>{draft=S.cfg.buttons.map(b=>({...b}));rows();$("dlg").showModal()};
+$("radd").onclick=()=>{draft.push({id:"n"+Date.now()+draft.length,label:"",text:"",group:tab==="All"?"General":tab});rows()};
+$("rcancel").onclick=()=>$("dlg").close();
+$("rsave").onclick=async()=>{$("dlg").close();await save({buttons:draft.filter(b=>b.text.trim())})};
+
+function wav(f32,sr){const b=new ArrayBuffer(44+f32.length*2),v=new DataView(b),w=(o,s)=>{for(let i=0;i<s.length;i++)v.setUint8(o+i,s.charCodeAt(i))};
+ w(0,"RIFF");v.setUint32(4,36+f32.length*2,true);w(8,"WAVEfmt ");v.setUint32(16,16,true);v.setUint16(20,1,true);v.setUint16(22,1,true);v.setUint32(24,sr,true);v.setUint32(28,sr*2,true);v.setUint16(32,2,true);v.setUint16(34,16,true);w(36,"data");v.setUint32(40,f32.length*2,true);
+ for(let i=0;i<f32.length;i++){const s=Math.max(-1,Math.min(1,f32[i]));v.setInt16(44+i*2,s<0?s*32768:s*32767,true)}return new Blob([b],{type:"audio/wav"})}
+function setSample(f32,sr){sample=wav(f32,sr);const s=f32.length/sr;$("sample").textContent=s<10?"Only "+s.toFixed(0)+" seconds. Please give at least 20.":"Sample ready: "+s.toFixed(0)+" seconds";$("sample").className="hint"+(s<10?"":" ok")}
+$("rec").onclick=async()=>{
+ if(rec){rec.pr.disconnect();rec.src.disconnect();rec.st.getTracks().forEach(t=>t.stop());clearInterval(rec.iv);
+  const n=rec.ch.reduce((a,c)=>a+c.length,0),all=new Float32Array(n);let o=0;for(const c of rec.ch){all.set(c,o);o+=c.length}
+  setSample(all,rec.ac.sampleRate);rec.ac.close();rec=null;$("rec").textContent="● Record";$("rec").classList.remove("rec");return}
+ try{const st=await navigator.mediaDevices.getUserMedia({audio:{noiseSuppression:true,echoCancellation:false}});
+  const ac=new AudioContext(),src=ac.createMediaStreamSource(st),pr=ac.createScriptProcessor(4096,1,1),ch=[];
+  pr.onaudioprocess=e=>ch.push(new Float32Array(e.inputBuffer.getChannelData(0)));src.connect(pr);pr.connect(ac.destination);
+  const t0=Date.now();rec={st,ac,src,pr,ch,iv:setInterval(()=>$("sample").textContent="Recording… "+Math.round((Date.now()-t0)/1000)+" s. Press again to stop.",300)};
+  $("rec").textContent="■ Stop recording";$("rec").classList.add("rec")}
+ catch(e){$("sample").textContent="Microphone is blocked. Allow it in the browser."}};
+$("up").onclick=()=>$("file").click();
+$("file").onchange=async e=>{const f=e.target.files[0];if(!f)return;
+ try{const ac=new AudioContext(),buf=await ac.decodeAudioData(await f.arrayBuffer());setSample(buf.getChannelData(0),buf.sampleRate);ac.close()}
+ catch(x){$("sample").textContent="Could not read this file. Try a wav or mp3."}e.target.value=""};
+$("mk").onclick=async()=>{const n=$("cname").value.trim();if(!n)return $("cmsg").textContent="Give your voice a name first.";
+ if(!sample)return $("cmsg").textContent="Record or upload a sample first.";
+ $("cmsg").textContent="Uploading…";
+ const r=await fetch("/api/clone?name="+encodeURIComponent(n)+"&base="+$("cbase").value,{method:"POST",body:sample}).then(r=>r.json()).catch(()=>({error:"Engine is not running"}));
+ if(r.error)$("cmsg").textContent=r.error;poll()};
+poll();setInterval(poll,250);
+</script></body></html>

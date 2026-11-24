@@ -1,0 +1,17 @@
+kokoro-onnx>=0.4.0
+onnxruntime
+sounddevice
+soundfile
+numpy<2
+torch
+huggingface_hub
+librosa
+pydub
+inflect
+unidecode
+eng_to_ipa
+pypinyin
+cn2an
+jieba
+langid
+wavmark
